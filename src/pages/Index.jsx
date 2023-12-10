@@ -3,6 +3,7 @@ import { obtenerClientes } from "../data/clientes"
 import Cliente from "../components/Cliente";
 
 export function loader(){
+    console.log(import.meta.env)
     const clientes = obtenerClientes()
     return clientes
 }

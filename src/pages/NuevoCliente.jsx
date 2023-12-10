@@ -1,11 +1,13 @@
-import { useNavigate, Form, useActionData } from "react-router-dom"
+import { useNavigate, Form, useActionData, redirect } from "react-router-dom"
 import Formulario from "../components/Formulario"
-import { object } from "prop-types"
+/* import { object } from "prop-types" */
 import Error from "../components/Error"
+import { agregarClientes } from "../data/clientes"
 
 export async function action({request}) {
   const formData = await request.formData()
   const datos = Object.fromEntries(formData)
+  const email = formData.get('email')
 
   //validacion
   const errores =[]
@@ -21,8 +23,10 @@ export async function action({request}) {
   if (Object.keys(errores).length) {
     return errores
   }
+
+  await agregarClientes(datos);
   
-  return null; 
+  return redirect('/'); 
 }
 
 const NuevoCliente = () => {
@@ -33,7 +37,7 @@ const NuevoCliente = () => {
   return (
     <>
       <h1 className='font-black text-4xl text-blue-900'>Nuevo cliente</h1>
-      <p className='mt-3'>Llena  todos los campos para registrar</p>
+      <p className='mt-3'>Llena todos los campos para registrar</p>
 
       <div className='flex justify-end'>
         <button
@@ -52,7 +56,7 @@ const NuevoCliente = () => {
           <Formulario/>
           <input 
             type="submit"
-            className="mt-5 w-full bg-blue-800 p-3 uppercase font-bold text-white text-lg"
+            className="mt-5 w-full bg-blue-800 p-3 uppercase font-bold text-white text-lg cursor-pointer"
             value="Registras CLiente"
           />
         </Form>
